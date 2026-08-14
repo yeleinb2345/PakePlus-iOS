@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07182d">
+  <meta name="description" content="面向中国版迷你世界创作者的 3.0 图形化触发器工作台">
+  <title>迷你世界 3.0 · 图形化触发器</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230d1928'/%3E%3Cpath d='M32 10 50 20v20L32 50 14 40V20z' fill='none' stroke='%2352b8ff' stroke-width='5'/%3E%3Cpath d='m14 20 18 10 18-10M32 30v20' fill='none' stroke='%232ed7f4' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-cubes" viewBox="0 0 24 24">
+      <path d="m12 2 7 3.8v7.7L12 17.3 5 13.5V5.8L12 2Z"/><path d="m5 5.8 7 3.9 7-3.9M12 9.7v7.6"/>
+      <path d="m8.2 15.2-3.7 2v3.1l3.7 2.1 3.8-2.1v-3M15.8 15.2l3.7 2v3.1l-3.7 2.1-3.8-2.1v-3"/>
+    </symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m4 4v5m4-5v5"/></symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="icon-undo" viewBox="0 0 24 24"><path d="M9 7 4 12l5 5M5 12h8a6 6 0 0 1 6 6"/></symbol>
+    <symbol id="icon-redo" viewBox="0 0 24 24"><path d="m15 7 5 5-5 5m4-5h-8a6 6 0 0 0-6 6"/></symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 20h14"/></symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M5 20h14"/></symbol>
+    <symbol id="icon-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6V3Z"/><path d="M14 3v5h5"/></symbol>
+    <symbol id="icon-save" viewBox="0 0 24 24"><path d="M5 4h12l2 2v14H5V4Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4"/></symbol>
+    <symbol id="icon-event" viewBox="0 0 24 24"><path d="m13 2-8 12h7l-1 8 8-12h-7l1-8Z"/></symbol>
+    <symbol id="icon-condition" viewBox="0 0 24 24"><path d="M12 3 21 12 12 21 3 12 12 3Z"/><path d="M9 12h6"/></symbol>
+    <symbol id="icon-action" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4V8Z"/></symbol>
+    <symbol id="icon-api" viewBox="0 0 24 24"><path d="m8 6-5 6 5 6m8-12 5 6-5 6M14 4l-4 16"/></symbol>
+    <symbol id="icon-trigger" viewBox="0 0 24 24"><circle cx="7" cy="6" r="2"/><circle cx="17" cy="12" r="2"/><circle cx="7" cy="18" r="2"/><path d="M9 6h2a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3M9 18h2a3 3 0 0 0 3-3v0a3 3 0 0 1 3-3"/></symbol>
+    <symbol id="icon-properties" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2m4 0h10M14 4v6M6 14v6"/></symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16"/></symbol>
+    <symbol id="icon-warning" viewBox="0 0 24 24"><path d="M12 3 2.8 20h18.4L12 3Z"/><path d="M12 9v5m0 3h.01"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></symbol>
+    <symbol id="icon-zoom-in" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5M10 7v6M7 10h6"/></symbol>
+    <symbol id="icon-zoom-out" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5M7 10h6"/></symbol>
+    <symbol id="icon-fit" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M8 21H3v-5m13 5h5v-5"/></symbol>
+    <symbol id="icon-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="icon-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15h18"/></symbol>
+    <symbol id="icon-spark" viewBox="0 0 24 24"><path d="m12 2 1.5 5.1L18 9l-4.5 1.9L12 16l-1.5-5.1L6 9l4.5-1.9L12 2Z"/><path d="m19 15 .7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15Z"/></symbol>
+  </svg>
+
+  <div id="app" class="app-shell" data-theme="dark">
+    <header class="topbar">
+      <div class="brand" aria-label="触发器工作台">
+        <button id="toggle-library-btn" class="brand-mark" type="button" title="节点库" aria-label="打开或关闭节点库" data-action="toggle-library"><svg><use href="#icon-cubes"/></svg></button>
+        <span class="brand-copy">
+          <strong>迷你世界触发器</strong>
+          <small>图形脚本工作台</small>
+        </span>
+        <span class="version-chip">3.0</span>
+      </div>
+
+      <div class="project-heading">
+        <span class="project-leading"><svg><use href="#icon-file"/></svg></span>
+        <label class="sr-only" for="project-name">项目名称</label>
+        <input id="project-name" type="text" value="新的冒险地图" maxlength="64" autocomplete="off" aria-label="项目名称">
+        <span id="save-status" class="save-status" data-state="saved" role="status">
+          <span class="status-dot"></span><span class="save-status-text">已保存</span>
+        </span>
+      </div>
+
+      <nav id="toolbar" class="topbar-actions" aria-label="项目工具栏">
+        <div class="toolbar-group" aria-label="历史记录">
+          <button id="undo-btn" class="icon-button" type="button" title="撤销 (Ctrl+Z)" aria-label="撤销" disabled><svg><use href="#icon-undo"/></svg></button>
+          <button id="redo-btn" class="icon-button" type="button" title="重做 (Ctrl+Shift+Z)" aria-label="重做" disabled><svg><use href="#icon-redo"/></svg></button>
+        </div>
+        <span class="toolbar-divider" aria-hidden="true"></span>
+        <button id="load-example-btn" class="button button-ghost" type="button"><svg><use href="#icon-spark"/></svg><span>示例</span></button>
+        <button id="import-json-btn" class="button button-ghost" type="button"><svg><use href="#icon-upload"/></svg><span>导入</span></button>
+        <input id="import-json-input" type="file" accept="application/json,.json" hidden>
+        <button id="export-json-btn" class="button button-ghost" type="button"><svg><use href="#icon-save"/></svg><span>保存项目</span></button>
+        <button id="clear-project-btn" class="icon-button danger-hover" type="button" title="清空项目" aria-label="清空项目"><svg><use href="#icon-trash"/></svg></button>
+        <span class="toolbar-divider" aria-hidden="true"></span>
+        <button id="validate-project-btn" class="button button-secondary" type="button"><svg><use href="#icon-check"/></svg><span>检查</span></button>
+        <button id="download-lua-btn" class="button button-primary" type="button"><svg><use href="#icon-download"/></svg><span>导出 Lua</span></button>
+      </nav>
+    </header>
+
+    <div id="runtime-banner" class="runtime-banner" data-state="ready" role="status" aria-live="polite">
+      <span class="runtime-icon"><svg><use href="#icon-check"/></svg></span>
+      <span class="runtime-message">积木脚本已就绪，所有内容都会编译为可运行的本地 Lua。</span>
+      <span class="runtime-meta">中国版迷你世界 · 3.0</span>
+      <button class="banner-close" type="button" aria-label="关闭提示" data-action="dismiss-banner"><svg><use href="#icon-close"/></svg></button>
+    </div>
+
+    <main class="workbench">
+      <aside class="left-sidebar" aria-label="触发器与节点库">
+        <section class="trigger-pane" aria-labelledby="trigger-pane-title">
+          <div class="pane-heading">
+            <div>
+              <span class="eyebrow">我的项目</span>
+              <h2 id="trigger-pane-title">触发器</h2>
+            </div>
+            <button id="add-trigger-btn" class="icon-button compact accent" type="button" title="新建触发器" aria-label="新建触发器"><svg><use href="#icon-plus"/></svg></button>
+          </div>
+          <div id="trigger-list" class="trigger-list" role="listbox" aria-label="触发器列表">
+            <button class="trigger-item is-active" type="button" role="option" aria-selected="true" data-trigger-id="trigger-main">
+              <span class="trigger-item-icon"><svg><use href="#icon-trigger"/></svg></span>
+              <span class="trigger-item-copy"><strong>玩家进入欢迎</strong><small>3 个节点 · 已启用</small></span>
+              <span class="trigger-state" title="已启用"></span>
+            </button>
+          </div>
+          <div class="trigger-actions" role="toolbar" aria-label="触发器操作">
+            <button id="duplicate-trigger-btn" class="text-icon-button" type="button" title="复制触发器"><svg><use href="#icon-copy"/></svg><span>复制</span></button>
+            <button id="delete-trigger-btn" class="text-icon-button danger" type="button" title="删除触发器"><svg><use href="#icon-trash"/></svg><span>删除</span></button>
+          </div>
+        </section>
+
+        <div class="sidebar-separator" role="separator"></div>
+
+        <section class="catalog-pane" aria-labelledby="catalog-title">
+          <div class="catalog-title-row">
+            <div>
+              <span class="eyebrow">积木中心</span>
+              <h2 id="catalog-title">积木库</h2>
+            </div>
+            <span class="catalog-count" id="catalog-count">全部</span>
+          </div>
+          <label class="search-field" for="node-search">
+            <svg><use href="#icon-search"/></svg>
+            <input id="node-search" type="search" placeholder="搜索事件、条件、动作或接口" autocomplete="off" spellcheck="false">
+            <kbd>/</kbd>
+          </label>
+          <div id="catalog-tabs" class="catalog-tabs" role="tablist" aria-label="节点分类">
+            <button class="catalog-tab is-active" type="button" role="tab" aria-selected="true" data-category="all">全部</button>
+            <button class="catalog-tab event" type="button" role="tab" aria-selected="false" data-category="event">事件</button>
+            <button class="catalog-tab condition" type="button" role="tab" aria-selected="false" data-category="condition">条件</button>
+            <button class="catalog-tab action" type="button" role="tab" aria-selected="false" data-category="action">动作</button>
+          </div>
+
+          <div id="node-catalog" class="node-catalog" role="tabpanel" aria-label="可用节点">
+            <section class="catalog-group" data-catalog-group="event">
+              <button class="catalog-group-heading" type="button" data-action="toggle-group" aria-expanded="true">
+                <span class="category-badge event"><svg><use href="#icon-event"/></svg></span>
+                <span>事件</span><span class="group-total">3</span><svg class="group-chevron"><use href="#icon-chevron"/></svg>
+              </button>
+              <div class="catalog-items">
+                <button class="catalog-node event" type="button" draggable="true" data-node-type="event.player_enter" data-category="event" data-label="玩家进入游戏">
+                  <span class="node-glyph"><svg><use href="#icon-event"/></svg></span>
+                  <span><strong>玩家进入游戏</strong><small>Game.Start</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+                <button class="catalog-node event" type="button" draggable="true" data-node-type="event.player_chat" data-category="event" data-label="玩家发送聊天">
+                  <span class="node-glyph"><svg><use href="#icon-event"/></svg></span>
+                  <span><strong>玩家发送聊天</strong><small>Player.NewInputContent</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+                <button class="catalog-node event" type="button" draggable="true" data-node-type="event.entity_hurt" data-category="event" data-label="生物受到伤害">
+                  <span class="node-glyph"><svg><use href="#icon-event"/></svg></span>
+                  <span><strong>生物受到伤害</strong><small>Actor.AttackHit</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="catalog-group" data-catalog-group="condition">
+              <button class="catalog-group-heading" type="button" data-action="toggle-group" aria-expanded="true">
+                <span class="category-badge condition"><svg><use href="#icon-condition"/></svg></span>
+                <span>条件</span><span class="group-total">2</span><svg class="group-chevron"><use href="#icon-chevron"/></svg>
+              </button>
+              <div class="catalog-items">
+                <button class="catalog-node condition" type="button" draggable="true" data-node-type="condition.player_has_item" data-category="condition" data-label="玩家拥有物品">
+                  <span class="node-glyph"><svg><use href="#icon-condition"/></svg></span>
+                  <span><strong>玩家拥有物品</strong><small>Backpack.hasItem</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+                <button class="catalog-node condition" type="button" draggable="true" data-node-type="condition.compare_number" data-category="condition" data-label="比较数值">
+                  <span class="node-glyph"><svg><use href="#icon-condition"/></svg></span>
+                  <span><strong>比较数值</strong><small>运算与分支</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="catalog-group" data-catalog-group="action">
+              <button class="catalog-group-heading" type="button" data-action="toggle-group" aria-expanded="true">
+                <span class="category-badge action"><svg><use href="#icon-action"/></svg></span>
+                <span>动作</span><span class="group-total">3</span><svg class="group-chevron"><use href="#icon-chevron"/></svg>
+              </button>
+              <div class="catalog-items">
+                <button class="catalog-node action" type="button" draggable="true" data-node-type="action.player_message" data-category="action" data-label="向玩家显示消息">
+                  <span class="node-glyph"><svg><use href="#icon-action"/></svg></span>
+                  <span><strong>向玩家显示消息</strong><small>Chat:sendSystemMsg</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+                <button class="catalog-node action" type="button" draggable="true" data-node-type="action.set_weather" data-category="action" data-label="设置世界天气">
+                  <span class="node-glyph"><svg><use href="#icon-action"/></svg></span>
+                  <span><strong>设置世界天气</strong><small>World:setWeather</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+                <button class="catalog-node action" type="button" draggable="true" data-node-type="action.play_sound" data-category="action" data-label="播放音效">
+                  <span class="node-glyph"><svg><use href="#icon-action"/></svg></span>
+                  <span><strong>播放音效</strong><small>Player:playMusic</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="catalog-group api-group" data-catalog-group="api">
+              <button class="catalog-group-heading" type="button" data-action="toggle-group" aria-expanded="true">
+                <span class="category-badge api"><svg><use href="#icon-api"/></svg></span>
+                <span>高级脚本接口</span><span class="group-total">接口</span><svg class="group-chevron"><use href="#icon-chevron"/></svg>
+              </button>
+              <div class="catalog-items">
+                <button class="catalog-node api" type="button" draggable="true" data-node-type="api.call" data-category="api" data-label="调用 Lua 接口">
+                  <span class="node-glyph"><svg><use href="#icon-api"/></svg></span>
+                  <span><strong>调用脚本接口</strong><small>选择任意可用接口</small></span>
+                  <span class="drag-handle" aria-hidden="true">⠿</span>
+                </button>
+              </div>
+            </section>
+          </div>
+          <p id="catalog-empty" class="catalog-empty" hidden>没有找到匹配的节点</p>
+        </section>
+      </aside>
+
+      <section class="canvas-panel" aria-label="可视化流程编辑器">
+        <header class="panel-toolbar canvas-toolbar">
+          <div class="canvas-breadcrumb" aria-label="当前位置">
+            <span>触发器</span><span class="breadcrumb-separator">/</span><strong id="active-trigger-name">玩家进入欢迎</strong>
+            <span class="enabled-chip"><span></span>已启用</span>
+          </div>
+          <div class="canvas-actions" role="toolbar" aria-label="画布工具">
+            <button id="toggle-inspector-btn" class="icon-button compact inspector-toggle" type="button" title="属性面板" aria-label="打开或关闭属性面板" data-action="toggle-inspector"><svg><use href="#icon-properties"/></svg></button>
+            <span class="canvas-hint">拖拽积木 · 自动嵌套</span>
+            <button id="zoom-out-btn" class="icon-button compact" type="button" title="缩小" aria-label="缩小"><svg><use href="#icon-zoom-out"/></svg></button>
+            <button id="zoom-reset-btn" class="zoom-value" type="button" title="重置缩放">100%</button>
+            <button id="zoom-in-btn" class="icon-button compact" type="button" title="放大" aria-label="放大"><svg><use href="#icon-zoom-in"/></svg></button>
+            <button id="fit-canvas-btn" class="icon-button compact" type="button" title="适应画布" aria-label="适应画布"><svg><use href="#icon-fit"/></svg></button>
+            <span class="toolbar-divider"></span>
+            <button id="canvas-menu-btn" class="icon-button compact" type="button" title="画布选项" aria-label="画布选项"><svg><use href="#icon-more"/></svg></button>
+          </div>
+        </header>
+
+        <div id="canvas" class="canvas" tabindex="0" data-zoom="1" aria-label="节点画布，拖入节点以构建流程">
+          <div class="canvas-grid" aria-hidden="true"></div>
+          <div class="canvas-glow canvas-glow-one" aria-hidden="true"></div>
+          <div class="canvas-glow canvas-glow-two" aria-hidden="true"></div>
+          <canvas id="liquid-glass-layer" aria-hidden="true"></canvas>
+
+          <div id="canvas-viewport" class="canvas-viewport">
+            <svg id="connections-layer" class="connections-layer" aria-hidden="true">
+              <defs>
+                <linearGradient id="flow-gradient-main" x1="0" x2="1">
+                  <stop offset="0" stop-color="#2ed7f4"/><stop offset="1" stop-color="#8b7cff"/>
+                </linearGradient>
+                <linearGradient id="flow-gradient-true" x1="0" x2="1">
+                  <stop offset="0" stop-color="#f0bb57"/><stop offset="1" stop-color="#8b7cff"/>
+                </linearGradient>
+                <filter id="connection-glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <path class="connection-shadow" d="M 232 159 C 246 159, 246 251, 260 251"/>
+              <path class="connection-path main" d="M 232 159 C 246 159, 246 251, 260 251"/>
+              <path class="connection-shadow" d="M 498 250 C 512 250, 512 161, 526 161"/>
+              <path class="connection-path branch-true" d="M 498 250 C 512 250, 512 161, 526 161"/>
+            </svg>
+
+            <div id="canvas-content" class="canvas-content block-program">
+              <div class="program-caption" aria-hidden="true"><span></span>从上到下运行</div>
+
+              <article class="event-cap block-node is-selected" data-node-id="node-event-1" data-node-type="event.player_enter">
+                <span class="block-icon"><svg><use href="#icon-event"/></svg></span>
+                <div class="block-copy"><small>当发生事件</small><strong>任意玩家进入游戏</strong></div>
+                <span class="expression-pill">事件玩家</span>
+                <button type="button" class="block-menu" aria-label="事件积木菜单"><svg><use href="#icon-more"/></svg></button>
+              </article>
+
+              <section class="if-frame block-node" data-node-id="node-condition-1" data-node-type="condition.compare_number">
+                <header class="if-frame-header">
+                  <span class="if-label">如果</span>
+                  <div class="condition-block">
+                    <span class="condition-mark"><svg><use href="#icon-condition"/></svg></span>
+                    <span class="expression-pill">事件玩家</span>
+                    <strong>生命值</strong>
+                    <span class="operator-pill">大于</span>
+                    <span class="number-pill">0</span>
+                  </div>
+                  <span class="then-label">那么</span>
+                </header>
+
+                <div class="branch-dropzone" aria-label="满足条件时执行">
+                  <article class="action-block block-node" data-node-id="node-action-1" data-node-type="action.player_message">
+                    <span class="block-icon"><svg><use href="#icon-action"/></svg></span>
+                    <strong>向</strong><span class="expression-pill">事件玩家</span><strong>显示消息</strong>
+                    <span class="text-pill">欢迎来到地图！</span>
+                    <button type="button" class="block-menu" aria-label="动作积木菜单"><svg><use href="#icon-more"/></svg></button>
+                  </article>
+                  <article class="action-block block-node compact-action" data-node-type="action.state_add">
+                    <span class="block-icon"><svg><use href="#icon-action"/></svg></span>
+                    <strong>将玩家变量</strong><span class="expression-pill">进入次数</span><strong>增加</strong><span class="number-pill">1</span>
+                  </article>
+                </div>
+
+                <div class="else-branch">
+                  <span class="else-label">否则</span>
+                  <div class="branch-dropzone is-empty"><span>拖入动作积木</span></div>
+                </div>
+              </section>
+
+              <button class="program-add" type="button" data-action="add-first-node"><svg><use href="#icon-plus"/></svg><span>继续添加积木</span></button>
+            </div>
+          </div>
+
+          <div id="empty-canvas" class="empty-canvas" hidden>
+            <span class="empty-illustration"><svg><use href="#icon-trigger"/></svg></span>
+            <h3>从一个事件开始</h3>
+            <p>把左侧节点拖到这里，连接后即可生成 Lua 脚本。</p>
+            <button class="button button-secondary" type="button" data-action="add-first-node"><svg><use href="#icon-plus"/></svg><span>添加事件节点</span></button>
+          </div>
+
+          <div class="canvas-minimap" aria-label="画布缩略图">
+            <div class="minimap-surface"><i class="mini-node one"></i><i class="mini-node two"></i><i class="mini-node three"></i><span class="minimap-viewport"></span></div>
+          </div>
+          <div class="canvas-shortcuts" aria-hidden="true"><kbd>Space</kbd><span>移动画布</span><kbd>Del</kbd><span>删除</span></div>
+        </div>
+      </section>
+
+      <aside id="inspector" class="inspector" aria-labelledby="inspector-title">
+        <header class="panel-toolbar inspector-toolbar">
+          <div class="panel-title">
+            <span class="panel-title-icon"><svg><use href="#icon-properties"/></svg></span>
+            <div><span class="eyebrow">节点设置</span><h2 id="inspector-title">属性</h2></div>
+          </div>
+          <button class="icon-button compact" type="button" title="面板设置" aria-label="面板设置"><svg><use href="#icon-settings"/></svg></button>
+        </header>
+
+        <div id="inspector-content" class="inspector-content" data-selection="node-event-1">
+          <section class="selection-card">
+            <span class="selection-icon event"><svg><use href="#icon-event"/></svg></span>
+            <div><span>当前节点</span><strong>玩家进入游戏</strong></div>
+            <span class="selection-type">EVENT</span>
+          </section>
+
+          <section class="property-section is-open">
+            <button class="property-section-heading" type="button" aria-expanded="true" data-action="toggle-property-section">
+              <span>基础设置</span><svg><use href="#icon-chevron"/></svg>
+            </button>
+            <div class="property-fields">
+              <label class="field">
+                <span>节点名称</span>
+                <input id="node-label-input" type="text" value="玩家进入游戏" data-property="label">
+              </label>
+              <label class="field">
+                <span>事件来源</span>
+                <span class="select-wrap"><select id="event-source-select" data-property="source"><option value="any">任意玩家</option><option value="host">房主</option><option value="specific">指定玩家</option></select><svg><use href="#icon-chevron"/></svg></span>
+              </label>
+              <label class="toggle-field">
+                <span><strong>启用节点</strong><small>关闭后不会生成对应代码</small></span>
+                <input id="node-enabled-input" type="checkbox" checked data-property="enabled"><i aria-hidden="true"></i>
+              </label>
+            </div>
+          </section>
+
+          <section class="property-section is-open">
+            <button class="property-section-heading" type="button" aria-expanded="true" data-action="toggle-property-section">
+              <span>输出数据</span><svg><use href="#icon-chevron"/></svg>
+            </button>
+            <div class="output-list">
+              <div class="output-item"><span class="output-dot string"></span><div><strong>eventobjid</strong><small>触发事件的玩家 ID</small></div><code>number</code></div>
+              <div class="output-item"><span class="output-dot string"></span><div><strong>toobjid</strong><small>事件目标 ID</small></div><code>number</code></div>
+            </div>
+          </section>
+
+          <section class="property-section">
+            <button class="property-section-heading" type="button" aria-expanded="false" data-action="toggle-property-section">
+              <span>高级选项</span><svg><use href="#icon-chevron"/></svg>
+            </button>
+            <div class="property-fields" hidden>
+              <label class="field"><span>自定义标识</span><input type="text" placeholder="可选" data-property="customId"></label>
+            </div>
+          </section>
+        </div>
+
+        <div id="inspector-empty" class="inspector-empty" hidden>
+          <span><svg><use href="#icon-properties"/></svg></span><h3>未选择节点</h3><p>选择画布中的节点以编辑参数。</p>
+        </div>
+      </aside>
+
+      <section class="bottom-panel" aria-label="代码与诊断">
+        <header class="bottom-panel-header">
+          <div class="bottom-tabs" role="tablist" aria-label="底部面板">
+            <button class="bottom-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="lua-panel" data-bottom-tab="lua">
+              <svg><use href="#icon-code"/></svg><span>脚本预览</span><span class="live-chip">实时</span>
+            </button>
+            <button class="bottom-tab" type="button" role="tab" aria-selected="false" aria-controls="diagnostics" data-bottom-tab="diagnostics">
+              <svg><use href="#icon-warning"/></svg><span>问题</span><span id="diagnostic-count" class="tab-count">0</span>
+            </button>
+          </div>
+          <div class="bottom-actions">
+            <span class="generated-status"><span></span>已同步</span>
+            <button id="copy-lua-btn" class="button button-ghost button-small" type="button"><svg><use href="#icon-copy"/></svg><span>复制代码</span></button>
+            <button class="icon-button compact" type="button" title="最大化面板" aria-label="最大化底部面板" data-action="toggle-bottom-panel"><svg><use href="#icon-panel"/></svg></button>
+          </div>
+        </header>
+
+        <div id="lua-panel" class="bottom-panel-content code-panel" role="tabpanel" data-bottom-panel="lua">
+          <div class="code-gutter" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+          <pre id="lua-output" tabindex="0" aria-label="生成的 Lua 代码"><code><span class="syntax-comment">-- 由触发器工作台生成</span>
+<span class="syntax-keyword">local</span> <span class="syntax-variable">function</span> <span class="syntax-function">onPlayerEnter</span>(<span class="syntax-variable">event</span>)
+  <span class="syntax-keyword">local</span> <span class="syntax-variable">playerId</span> = <span class="syntax-variable">event</span>.<span class="syntax-property">eventobjid</span>
+  <span class="syntax-keyword">if</span> <span class="syntax-variable">playerId</span> <span class="syntax-keyword">then</span>
+    <span class="syntax-function">Chat:sendSystemMsg</span>(<span class="syntax-string">"欢迎来到地图！"</span>, <span class="syntax-variable">playerId</span>)
+  <span class="syntax-keyword">end</span>
+<span class="syntax-keyword">end</span>
+
+<span class="syntax-function">ScriptSupportEvent:registerEvent</span>(<span class="syntax-string">"Game.AnyPlayer.EnterGame"</span>, <span class="syntax-function">onPlayerEnter</span>)</code></pre>
+          <div class="code-overview" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </div>
+
+        <div id="diagnostics" class="bottom-panel-content diagnostics" role="tabpanel" data-bottom-panel="diagnostics" hidden>
+          <div class="diagnostics-empty">
+            <span><svg><use href="#icon-check"/></svg></span><div><strong>没有发现问题</strong><p>当前触发器结构完整，可以导出 Lua 脚本。</p></div>
+          </div>
+          <div id="diagnostic-list" class="diagnostic-list" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="statusbar">
+      <div class="statusbar-group">
+        <span class="status-item runtime-ok"><i></i>Lua 运行时就绪</span>
+        <span class="status-item"><svg><use href="#icon-trigger"/></svg><span id="status-trigger-count">1 个触发器</span></span>
+        <span class="status-item"><svg><use href="#icon-cubes"/></svg><span id="status-node-count">3 个节点</span></span>
+      </div>
+      <div class="statusbar-group">
+        <button type="button" class="status-button"><svg><use href="#icon-info"/></svg>接口目录已加载</button>
+        <span class="status-item">UTF-8</span>
+        <span class="status-item">Lua</span>
+      </div>
+    </footer>
+  </div>
+
+  <div id="toast-region" class="toast-region" role="region" aria-label="通知" aria-live="polite"></div>
+  <div id="modal-root" class="modal-root"></div>
+
+  <script src="api-reference.js"></script>
+  <script src="api-catalog.js"></script>
+  <script src="app.js"></script>
+  <script src="liquid-glass.js"></script>
+</body>
+</html>
