@@ -1,0 +1,17 @@
+{
+  "name": "miniworld-lua-flow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "面向迷你世界 UGC 3.0 的离线图形化 Lua 触发器编辑器",
+  "type": "module",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "build": "node tools/build.mjs",
+    "check": "node tools/check.mjs",
+    "test:sites": "node --test tests/sites-worker.test.mjs",
+    "sync:api": "node tools/sync-api.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
